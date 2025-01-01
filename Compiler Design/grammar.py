@@ -4,7 +4,7 @@
 # for i in none_finishers : 
 #     Grammar[i] = input(f'Expression of the {i} like(Aa|b|epsilon) : ').split('|')
 # print(f'Grammar = {Grammar}')
-Grammar = {'A': ['sdfA', 'sdfB', 'sdA', 'sA', 'efB', 'efaA'], 'B': ['f']}
+Grammar = {'A': ['sdfA', 'sdfB', 'sdA', 'sA', 'efB', 'efaA', 'fAfd'], 'B': ['f']}
 none_finishers = ['A','B']
 ###########################################################################################################
 # check the left recursion of the Grammar
@@ -52,7 +52,7 @@ def check_commons(str1, str2):
 
 
 
-first_expr = next(iter(Grammar.values()))
+first_expr = [x for x in next(iter(Grammar.values()))]
 while len([x for x in first_expr if x != '']) != 0:
     # find commons and saving
     for i in range(len(first_expr)) :
@@ -104,3 +104,34 @@ for i in factors.items():
         
     
 ############################################################################################################
+# calculating First for every one
+def checkFirst(none_finisher):
+    exprs = Grammar[none_finisher]
+    res = list()
+    for i in exprs:
+        if i[0].upper() != i[0]:
+            res.append(i[0])
+        else : 
+            res += checkFirst()
+    return set(res)
+
+
+for i in Grammar:
+    print(f'\nFirst for {i} : {checkFirst(i)}')
+    
+
+
+
+
+
+############################################################################################################
+# calculating the follow for every one
+def checkFollow(none_finisher):
+    exprs = Grammar[none_finisher]
+    res = list()
+    for i in exprs:
+        print(i)
+        print(i.index(none_finisher))
+        # after = i[i.index(none_finisher):]
+        # print(after)
+checkFollow('A')
