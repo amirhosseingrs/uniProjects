@@ -4,7 +4,7 @@
 # for i in none_finishers : 
 #     Grammar[i] = input(f'Expression of the {i} like(Aa|b|epsilon) : ').split('|')
 # print(f'Grammar = {Grammar}')
-Grammar = {'A': ['sdfA', 'sdfB', 'sdA', 'sA', 'efB', 'efaA', 'fAfd'], 'B': ['f']}
+Grammar = {'A': ['sdfA', 'sdfB', 'sdA', 'sA', 'efB', 'efaA', 'fAcd', 'aAB', 'aBa'], 'B': ['f','d']}
 none_finishers = ['A','B']
 ###########################################################################################################
 # check the left recursion of the Grammar
@@ -25,7 +25,7 @@ for i in Grammar:
         LRR += f'{none_finisher} -> {"|".join(betha)} \n{name} -> {alpha} {name} |  ε\n'
     else : 
         LRR += f'{none_finisher} -> {"|".join(exprs)}\n'
-print(f'Left Recursions Handler: \n{LRR}')
+# print(f'Left Recursions Handler: \n{LRR}')
 
 
 
@@ -97,10 +97,10 @@ for i in Commons.items():
         factors[name] = bethas
     else : 
         res += i[0] + '|'
-print(f'\nLeft Factoring : \n{res[:-1]}')
+# print(f'\nLeft Factoring : \n{res[:-1]}')
 for i in factors.items():
     bethas = '|'.join(i[1])
-    print(f'{i[0]} -> {bethas}')
+    # print(f'{i[0]} -> {bethas}')
         
     
 ############################################################################################################
@@ -116,8 +116,8 @@ def checkFirst(none_finisher):
     return set(res)
 
 
-for i in Grammar:
-    print(f'\nFirst for {i} : {checkFirst(i)}')
+# for i in Grammar:
+    # print(f'\nFirst for {i} : {checkFirst(i)}')
     
 
 
@@ -126,12 +126,28 @@ for i in Grammar:
 
 ############################################################################################################
 # calculating the follow for every one
+
+# print(f'Grammar = {Grammar}')
 def checkFollow(none_finisher):
-    exprs = Grammar[none_finisher]
+    exprs = [x for x in Grammar['A'] if none_finisher in x]
     res = list()
-    for i in exprs:
-        print(i)
-        print(i.index(none_finisher))
-        # after = i[i.index(none_finisher):]
-        # print(after)
-checkFollow('A')
+    for i in range(len(exprs)):
+        checkee = exprs[i]
+        # print(i.index(none_finisher))
+        after = checkee[checkee.index(none_finisher)+1:]
+        if len(after) > 0 : 
+            after = after[0]
+            if after.upper() != after : 
+                res.append(after)
+            else :
+                res += checkFirst(after)
+                # print(f'natije for {after} = {checkFirst(after)}')
+
+    return set(res)
+
+
+for i in Grammar:
+    print(f'Follow({i}) : {checkFollow(i)}')
+
+
+
